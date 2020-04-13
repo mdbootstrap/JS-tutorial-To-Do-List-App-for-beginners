@@ -12,7 +12,7 @@ function addTask() {
 document.getElementById('add').addEventListener('click', addTask);
 document.getElementById('list').addEventListener('click', function(event){
     const element = event.target;
-    console.log(element);
+    element.classList.toggle("done");
 });
 
 
