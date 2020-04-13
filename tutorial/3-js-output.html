@@ -1,0 +1,125 @@
+<style>
+    img {
+        max-width: 99%;
+        max-height: 99%;    
+    }
+</style>
+<h1>How to get data from JS into HTML</h1>
+
+<p>Since we already know how to pass data from our visitors to our JS functions, let's learn how we can use JS to modify data on our page.</p>
+
+
+<h2>innerText</h2>
+
+
+<p>In the previous lesson we have learn how to get data from different HTML tags using innerHTML, now we will learn how to use the same function to set it. </p>
+
+<p>Add some div:</p>
+
+<pre><code>
+    &lt;form onsubmit=&quot;addTask();return false&quot; action=&quot;#&quot;&gt;&#13;&#10;        &lt;label for=&quot;task&quot;&gt;Task:&lt;/label&gt;&#13;&#10;        &lt;input type=&quot;text&quot; name=&quot;task&quot; id=&quot;task&quot;&gt;&#13;&#10;        &lt;input type=&quot;submit&quot; id=&quot;add&quot; value=&quot;Add&quot;&gt;&#13;&#10;    &lt;/form&gt;&#13;&#10;&#13;&#10;    &lt;div id=&quot;todos&quot;&gt;List of todos...&lt;/div&gt;
+</code></pre>
+
+<p>And update our addTask function:</p>
+
+
+<pre><code>
+    function addTask() {
+        var task = document.getElementById('task').value;
+    
+        document.getElementById('todos').innerText = task;
+    }
+</code></pre>
+
+<p>As you can see we can assign value/parameter to different html tags using simple assignment.</p>
+
+<h2>innerHTML</h2>
+
+<p>Similarly, we can also create and assign entire HTML structure:</p>
+
+<pre><code>
+    document.getElementById(&apos;todos&apos;).innerHTML = &quot;&lt;ol&gt;&lt;li&gt;&quot; + task + &quot;&lt;/li&gt;&lt;/ol&gt;&#13;&#10;
+</code></pre>
+
+
+<h2>Do I have to always replace entire content?</h2>
+
+<p>No!</p>
+
+<p>You probably noticed that currently we are replacing entire inner html of div. This means, that every time we add new task, the old one get erased.</p>
+
+<p>In order to append new HTML to existing one we will use another JS function - <i>insertAdjacentHTML()</i></p>
+
+<p>The insertAdjacentHTML() method inserts a text as HTML, into a specified position.</p>
+
+<p>Legal position values are:</p>
+
+<ul>
+<li>"afterbegin"</li>
+<li>"afterend"</li>
+<li>"beforebegin"</li>
+<li>"beforeend"</li>
+</ul>
+
+<img src="assets/insertAdjacentHTML.png" alt="">
+
+<p>Let's use unordered list (ul) inside our div:</p>
+
+<pre><code>
+    &lt;div id=&quot;todos&quot;&gt;&#13;&#10;        &lt;ul id=&quot;list&quot;&gt;&#13;&#10;        &lt;/ul&gt; &#13;&#10;    &lt;/div&gt;
+</code></pre>
+
+<p> and add new tasks as a new line items (li):</p>
+
+<pre><code>
+    document.getElementById(&apos;list&apos;).insertAdjacentHTML(&apos;beforeend&apos;, &quot;&lt;li&gt;&quot; + task + &quot;&lt;/li&gt;&quot;)&#13;&#10;
+</code></pre>
+
+<img src="assets/addTasks.gif" alt="">
+
+<h2>Not only the content</h2>
+
+<p>Now we know how to use JavaScript to manipulate content, but actually we can adjust almost any element of our webpage and it's properties.</p>
+
+<p>We can adjust classes by adding them: </p>
+
+<pre><code>
+    let element = document.getElementById("myDIV");
+    element.classList.add("new-class");
+</code></pre>
+
+<p>removing: </p>
+
+<pre><code>
+    var element = document.getElementById("myDIV");
+    element.classList.remove("new-class");
+</code></pre>
+
+<p>or toggle (add if not present or remove if present)</p>
+
+<pre><code>
+    var element = document.getElementById("myDIV");
+    element.classList.toggle("new-class");  
+</code></pre>
+
+<h2>Other options</h2>
+
+<p>As I said before - options are almost limitless. Using JS we can i.e. 
+    <ul>
+        <li>Change any attribute value (href="..." , src="..." , alt="...", etc. </li>
+        <li>Add new nested elements (child)</li>
+        <li>Replace children</li>
+        <li>Adjust element styles</li>
+        <li>Add animations</li>
+        <li>and many many more which you will get to know in next tutorials</li>
+    </ul>
+</p>
+
+<h2>Let's create some app</h2>
+
+<p>Now when we know how to transfer data between HTML and JS and apply CSS on the fly, it's high time to build some real app! </p>
+
+<p><a href="4-todo-app.html">Let's start!</a></p>
+
+
+

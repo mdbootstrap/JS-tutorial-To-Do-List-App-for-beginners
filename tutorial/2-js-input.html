@@ -1,0 +1,222 @@
+<style>
+    img {
+        max-width: 99%;
+        max-height: 99%;    
+    }
+</style>
+<h1>How to get data from HTML into JS</h1>
+
+<p>In order to build website we use HTML, CSS and JS. As you already know:
+
+    <ul>
+        <li>HTML is responsible for structure </li>
+        <li>CSS is responsible for layout</li>
+        <li>JS is responsible for logic</li>
+    </ul>
+</p>
+
+<p>Let's learn how can we make communication between HTML and JS happen in both directions. </p>
+
+<h2>HTML > JS</h2>
+
+
+<p>JavaScript has multiple options to get  values from HTML.</p>
+
+<p>Let's create a paragraph with id</p>
+
+<pre><code><p id="p1">Paragraph 1</p></code></pre>
+
+<p>and try to access this using GetElementById function in JS:</p>
+
+<pre><code>
+    let p = document.getElementById('p1');
+    console.log(p);
+</code></pre>
+
+<p>When you check in console, you will note that we received entire tag. But what if we are interested only in what inside the paragraph?</p>
+
+<p>Instead of printing out p, we will print it's innerText</p>
+
+<pre><code>console.log(p.innerText);</code></pre>
+
+<p>In case of nested structure:</p>
+
+<pre><code>
+    &lt;div id=&quot;d1&quot;&gt;&#13;&#10;        &lt;p id=&quot;p1&quot;&gt;Paragraph 1&lt;/p&gt;&#13;&#10;    &lt;/div&gt;
+</code></pre>
+
+<p>we can get not only text but entire internal HTML:</p>
+
+<pre><code>
+    let d = document.getElementById('d1');
+    console.log(d.innerText);
+    console.log(d.innerHTML);
+</code></pre>
+
+<p>We can also get values of it's atributes:</p>
+
+<pre><code>&lt;div id=&quot;d1&quot; class=&quot;a b c &quot;&gt;&lt;/div&gt;</code></pre>
+
+<pre><code>console.log(d.className);</code></pre>
+
+<p>and many more like:
+
+    <ul>
+        <li>name / id / namespace</li>
+        <li>attribute names / attribute values</li>
+        <li>children / firstElementChild / lastElementChild</li>
+        <li>and many more...</li>
+    </ul>
+
+</p>
+
+
+<h2>Other access methods</h2>
+
+<p>Using ID is convenient when our element's have them. However we have to remember that <strong>id must be unique</strong> (2 elements can't have same id). This means that we can use them only for elements on the website which are unique.  </p>
+
+<p>Sometimes we have elements which don't have id, what to do then? </p>
+
+<p>We can access them by tag </p>
+
+<pre><code>
+    const x = document. getElementsByTagName("p");
+    for (let e of x) { e.style.color = "green"; }
+</code></pre>
+
+
+<p><strong>Note!</strong> When you use tag selector, you will get access to all paragraphs on the page! </p>
+
+<p>Above code will get access to all paragraphs on the page, and change its' color to green.</p>
+
+<p>You can also access elements by class name:</p>
+
+<pre><code>
+    const x = document. getElementsByClassName("js");
+</code></pre>
+
+
+<h2>Inputs</h2>
+
+<p>Now you know how to literally access any element on the page. However, users browsing your website are not allowed to change elements like paragraphs. </p>
+
+<p>In order let your visitors interact with your page, we will use inputs. Inputs are used to build forms.</p>
+
+<p>Let's imagine that we want to build a simple TODO app. We will start with basic input in the  <i>index.html</i> file:</p>
+
+<pre><code> &lt;input type=&quot;text&quot;&gt;</code></pre>
+
+
+<p>Since it ain't self explenatory, let's add some label to it:</p>
+
+<pre><code>
+    &lt;label for=&quot;task&quot;&gt;Task:&lt;/label&gt;&#13;&#10;    &lt;input type=&quot;text&quot; name=&quot;task&quot; id=&quot;task&quot;&gt;&#13;&#10;    &lt;input type=&quot;submit&quot; id=&quot;add&quot; value=&quot;Add&quot;&gt;
+</code></pre>
+
+<p>As you noticed we added few things:</p>
+<ul>
+    <li>A label - in order to explain user what is the purpose of this input. Note, that label has attribute <i>for</i> which links it to the input in case you would have more labels nad inputs. </li>
+    <li>A <i>id</i> and <i>name</i> attribute to our input. While working with forms you will use <i>name</i> attribute to handle them once they are submitted, however we will also use <i>id</i> to interact with it using CSS and JS.</li>
+    <li>A input with <i>submit</i> type to submit our data.</li>
+</ul>
+
+<p>Keep in mind that HTML allows you to build very advanced and powerfull forms containing on or more following elements
+    <ul>
+        <li>input</li>
+        <li>textarea</li>
+        <li>button</li>
+        <li>select</li>
+        <li>option</li>
+        <li>optgroup</li>
+        <li>fieldset</li>
+        <li>label</li>
+        <li>output</li>
+    </ul>
+</p>
+
+<p>Check more examples of <a href="https://mdbootstrap.com/docs/jquery/forms/inputs/">inputs</a> and <a href="https://mdbootstrap.com/docs/jquery/forms/basic/">forms</a></p>
+
+<p>Now when our minimalists form is ready, we have do last thing. Read data from our input when user click submit button/ </p>
+
+
+<h2>Submitting inputs</h2>
+
+<p>As always in programming, there are multiple way to achieve same result. </p>
+
+<h3>onClick()</h3>
+
+<p>On of the easiest option is to use <i>onClick</i> event to our submit input: </p>
+
+<pre><code>
+    &lt;input type=&quot;submit&quot; id=&quot;add&quot; value=&quot;Add&quot; onclick=&quot;addTask()&quot;&gt;&#13;&#10;
+</code></pre>
+
+<p>which will addTask() function:</p>
+
+<pre><code>
+    function addTask() {
+        let task = document.getElementById('task').value;
+        console.log(task)
+    }    
+</code></pre>
+
+
+<h3>onSubmit</h3>
+
+<p>Imagine that instead of simple input, we have entire form to create. I.e. tax form where we have provide 20 or 40 different answers - or - even better (worse?), that we are about to create multi step wizard with multiple subforms. I.e. regitration, order, invoice details.  </p>
+<p>In order to organize our inputs, HTML offers a <code><pre>&lt;form&gt;&lt;/form&gt;</pre></code> tag which works like a wrapper to all our inputs and allows us to submit them all at once.</p>
+
+<p>Wrap our input with form:</p>
+
+<pre><code>
+    &lt;form onsubmit=&quot;addTask();return false&quot; action=&quot;#&quot;&gt;&#13;&#10;        &lt;label for=&quot;task&quot;&gt;Task:&lt;/label&gt;&#13;&#10;        &lt;input type=&quot;text&quot; name=&quot;task&quot; id=&quot;task&quot;&gt;&#13;&#10;        &lt;input type=&quot;submit&quot; id=&quot;add&quot; value=&quot;Add&quot;&gt;&#13;&#10;    &lt;/form&gt;
+</code></pre>
+
+<p><i>Note: We added return false to onsubmit="" in order to prevent website from reload. We will cover that in future lesson about forms.</i></p>
+
+<p><strong>Note:</strong>Although you can use <i>inputs</i> outside form tag - code will be still valid, if your intention is to submit data in any way, you should be using a form.</p>
+
+<p>Why do we put <pre><code>&lt;input&gt;</code></pre> elements inside of <pre><code>&lt;form&gt;&lt;/form&gt;</code></pre> elements? For the same reason we put &lt;li&gt; tags inside of &lt;ul&gt; and &lt;ol&gt; elements - it's where they belong. It's semantically correct, and helps to define the markup. Parsers, screen readers, and various software can better understand your markup when it is semantically correct - when the markup has meaning, not just structure.</p>
+
+
+<h3>Using listener</h3>
+
+<p>Instead of explicitly specify which function to call in on HTML side, JavaScript allows us to define listeners. Event listeners can react on different events i.e.: 
+    
+<ul>
+<li>When a user clicks the mouse</li>
+<li>When a web page has loaded</li>
+<li>When an image has been loaded</li>
+<li>When the mouse moves over an element</li>
+<li>When an input field is changed</li>
+<li>When an HTML form is submitted</li>
+<li>When a user strokes a key</li>
+</ul></p>
+
+<p>Example</p>
+
+
+<pre><code>
+    document.getElementById('add').addEventListener('click', addTask);
+</code></pre>
+
+<p>Remember to remove call to <i>addTask()</i> function from onsubmit, but <strong>keep in mind to leave <i>return false</i></strong></p>
+
+<pre><code>
+    &lt;form onsubmit=&quot;return false&quot; action=&quot;#&quot;&gt;&#13;&#10;
+</code></pre>
+
+
+
+<p>As you already noticed, addEventListener accepts 2 arguments (actually - 3, but we will skip third for the moment since it's optional)
+    <ul>
+        <li>event type - i.e. "click" or "mousedown"</li>
+        <li>function we want to call when event occurs</li>
+    </ul>
+</p>
+
+<p>Since we know how to pass data from HTML to JS, let's move to the <a href="3-js-output.html">next lesson</a>  and learn how to we can do it in opposite direction.</p>
+
+
+
+

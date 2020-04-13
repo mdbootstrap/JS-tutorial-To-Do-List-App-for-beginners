@@ -1,0 +1,198 @@
+<style>
+    img {
+        max-width: 99%;
+        max-height: 99%;    
+    }
+</style>
+<h1>Todo App</h1>
+
+<h2>Plan</h2>
+
+
+<p>In order to create our app we will need to execute following steps:
+
+<ol>
+    <li>Cleanup code</li>
+    <li>Add styles</li>
+    <li>Add functionality to mark task as completed</li>
+</ol>
+
+
+
+</p>
+
+<h2>Cleanup:</h2>
+
+<p>In order to create our app we will:
+
+    <ol>
+        <li>wrap it with surrounding div</li>
+        <li>replace &lt;label&gt; tag with placeholder="" attribute in input</li>
+        <li>Clean JS code</li>
+    </ol>
+</p>
+
+<p>Update index.html code:</p>
+
+<pre><code>
+    &lt;div class=&quot;app&quot;&gt;&#13;&#10;        &lt;form onsubmit=&quot;return false&quot; action=&quot;#&quot;&gt;&#13;&#10;            &lt;input type=&quot;text&quot; name=&quot;task&quot; id=&quot;task&quot; placeholder=&quot;Add new task...&quot;&gt;&#13;&#10;            &lt;input type=&quot;submit&quot; id=&quot;add&quot; value=&quot;Add&quot;&gt;&#13;&#10;        &lt;/form&gt;&#13;&#10;    &#13;&#10;        &lt;div id=&quot;todos&quot;&gt;&#13;&#10;          &lt;ul id=&quot;list&quot;&gt;&#13;&#10;          &lt;/ul&gt; &#13;&#10;        &lt;/div&gt;&#13;&#10;    &lt;/div&gt;
+</code></pre>
+
+
+<p>Now let's do some small cleanup in JS, instead of concatenating our new list item inside the function: </p>
+
+<pre><code>
+    document.getElementById(&apos;list&apos;).insertAdjacentHTML(&apos;beforeend&apos;, &quot;&lt;li class=&apos;task&apos;&gt;&quot; + task + &quot;&lt;/li&gt;&quot;)&#13;&#10;
+</code></pre>
+
+<p>let's make it more readable and split it in 2 steps:</p>
+
+<pre><code>
+    const text = &quot;&lt;li class=&apos;task&apos;&gt;&quot; + task + &quot;&lt;/li&gt;&quot;&#13;&#10;    document.getElementById(&apos;list&apos;).insertAdjacentHTML(&apos;beforeend&apos;, text)
+</code></pre>
+
+<p>We want to make sure that we won't add tasks with empty name:</p>
+
+
+<pre><code>
+    if (!task)
+    return;
+</code></pre>
+
+<p>This condition, checks whether task, isn't an empty value. In case it is, it will return 0, therefore we are adding ! sign in front which revert logic: 
+
+    <ul>
+        <li> !1 = 0 (!false = true)</li>
+        <li> !0 = 1 (!true = false)</li>
+    </ul>
+
+    So if someone tries to add empty task, our condition will be triggered and function will stop execution here.
+</p>
+
+<p>Finally, once we add new item to the list, we want to clear our input area:</p>
+
+<pre><code>
+    document.getElementById('task').value = '';
+</code></pre>
+
+<p>The final <i>scripts.js</i> code after cleanup:</p>
+
+<pre><code>
+    function addTask() {&#13;&#10;        let task = document.getElementById(&apos;task&apos;).value;&#13;&#10;    &#13;&#10;        if (!task)&#13;&#10;        return;&#13;&#10;    &#13;&#10;        const text = &quot;&lt;li class=&apos;task&apos;&gt;&quot; + task + &quot;&lt;/li&gt;&quot;&#13;&#10;        document.getElementById(&apos;list&apos;).insertAdjacentHTML(&apos;beforeend&apos;, text)&#13;&#10;        document.getElementById(&apos;task&apos;).value = &apos;&apos;;&#13;&#10;    }&#13;&#10;    &#13;&#10;    document.getElementById(&apos;add&apos;).addEventListener(&apos;click&apos;, addTask);
+</code></pre>
+
+
+<h2>Add styles:</h2>
+
+<pre><code>
+    html{
+        height: 100%;
+        background-image: linear-gradient(#20a9d3,#0d5c9c);
+        background-repeat: no-repeat;
+        font-family: sans-serif;
+        color: #0f222d;
+        background-size: auto;
+      }
+      
+      .app{
+        width: 400px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin: auto;
+      }
+      h1{
+        text-align: center;
+        color: #fff;
+      }
+      form{
+        background-color: #fff;
+        padding: 15px;
+      }
+      input[type="text"]{
+        width: 310px;
+        height: 30px;
+        outline: 0;
+        border: none;
+        font-size: 1.5em;
+        background: #fff;
+        color: #2f4f4f;
+      }
+      input[type="submit"]{
+        font-size: 1.5em;
+        color: #53BDFF;
+        background-color: #fff;
+        outline: 0;
+        border: none;
+        width: 50px;
+      
+      }
+      .todos{
+        background-color: #fff;
+        margin-top: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 40px;
+      
+      }
+      ul{
+        list-style: none;
+      }
+      li{
+        border-bottom: 1px solid #53BDFF;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        font-size: 1.3em;
+        color: #ffffff;
+        cursor: pointer;
+      }
+    
+      .done {
+        text-decoration: line-through; 
+        color: #104123;
+        cursor: pointer;
+      }
+     
+</code></pre>
+
+<h2>Add option to mark task as done</h2>
+
+<p>Now we have to mark our tasks as done. In order to do that we will add or remove class <i>done</i> to the item when someone clicks on it.</p>
+
+<p>Add new listener:</p>
+
+<pre><code>
+    document.getElementById('list').addEventListener('click', function(event){
+        const element = event.target;
+        console.log(element);
+    });
+</code></pre>
+
+<p>Now we can check console to verify if we are catching correct element.</p>
+
+
+<p>As you can notice - we are passing a click event to our function, and assigning it's target (so element which was clicked) to constant variable called <i>element</i></p>
+<img src="assets/eventTarget.gif" alt="">
+
+<p>Since we have our element assign, the last thing we have to do is to toggle <i>done</i> class: </p>
+
+
+<pre><code>
+    document.getElementById('list').addEventListener('click', function(event){
+        const element = event.target;
+        element.classList.toggle("done");
+    });
+</code></pre>
+
+<p>Voila! Our code is ready.</p>
+
+
+<p>There are few more enhancements which we could provide to our app like: 
+
+    <ul>
+        <li>Store our tasks in the array and then print it to the list using loop</li>
+        <li>Add delete option to remove item from the list</li>
+    </ul>
+</p>
+
+<p>Try to write this functionality yourself and if you want to see final solution, don't miss next tutorial!</p>
